@@ -1,20 +1,12 @@
-import {Heading,Text,Button } from '../node_modules/react-email/src/components'
+import { Html, Head, Preview, Section, Row, Text, Button, Heading, Font } from "@react-email/components";
 
-import {Preview}  from '../node_modules/react-email/src/package/preview/dist/index'
 
-import { Html } from '../node_modules/react-email/src/package/html/dist/index'
 
-import { Head} from '../node_modules/react-email/src/package/head/dist/index'
-
-import { Font } from '../node_modules/react-email/src/package/font/dist/index'
-
-import { Row } from '../node_modules/react-email/src/package/row/dist/index'
-import { Section, } from '../node_modules/react-email/src/package/section/dist/index' 
-
-interface VerificationEmailProps{
-    username:string
-    otp:string
+interface VerificationEmailProps {
+    username: string;
+    otp: string;
 }
+
 
 const VerificationEmail=({username,otp}:VerificationEmailProps)=>{
     return(
@@ -52,11 +44,11 @@ const VerificationEmail=({username,otp}:VerificationEmailProps)=>{
             </Row>
             {
                 <Row>
-                    <a href="href={`http://localhost:3000/verify/${username}`}">
-                        <Button  style={{color:'#61dafb'}}>
+                    
+                        <Button href={`http://localhost:3000/verify/${username}`} style={{color:'#61dafb'}}>
                             verify here
                         </Button>
-                    </a>
+                   
                 </Row>
                 
             }
