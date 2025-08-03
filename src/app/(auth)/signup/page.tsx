@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useDebounceValue } from "usehooks-ts";
+import { useDebounceCallback } from "usehooks-ts";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signUpSchema } from "@/schemas/signUpSchema";
@@ -32,7 +32,7 @@ const page = () => {
   const [usernameMessage, setUsernameMessage] = useState("");
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const debouncedUsername = useDebounceValue(username, 300);
+  const debouncedUsername = useDebounceCallback(setUsername, 400);
   const router = useRouter();
 
   // *zod implementation
@@ -48,12 +48,12 @@ const page = () => {
 
   useEffect(() => {
     const checkUsernameUnique = async () => {
-      if (debouncedUsername) {
+      if (username) {
         setIsCheckingUsername(true);
         setUsernameMessage("");
         try {
           const response = await axios.get(
-            `/api/check-username-unique?username=${debouncedUsername}`
+            `/api/check-username-unique?username=${username}`
           );
 
           setUsernameMessage(response.data.message);
@@ -68,7 +68,7 @@ const page = () => {
       }
     };
     checkUsernameUnique();
-  }, [debouncedUsername]);
+  }, [username]);
 
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     setIsSubmitting(true);
@@ -77,25 +77,21 @@ const page = () => {
       const response = await axios.post<ApiResponse>("/api/signup", data);
 
       toast.success(response.data.message);
-
       router.replace(`/verify/${username}`);
+      
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       console.error("Error in signup of user", error);
-      toast({
-        title: "signup failed",
-        description: `error in signup ${axiosError.response?.data.message}`,
-        variant: "destructive",
-      });
+      toast.error( `error in signup ${axiosError.response?.data.message}`);
     } finally {
       setIsSubmitting(false);
     }
   };
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-300">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white/20 rounded-lg shadow-lg">
+    <div className="flex justify-center items-center min-h-screen bg-transparent">
+      <div className="w-full max-w-md p-8 space-y-8 text-yellow-500 rounded-lg shadow-md shadow-amber-400">
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
+          <h1 className="text-4xl bg-gradient-to-r from-indigo-600 via-yellow-400 to-rose-600 text-transparent bg-clip-text font-extrabold tracking-tight lg:text-5xl mb-6">
             {" "}
             JOIN MYSTRY MESSAGE
           </h1>
@@ -111,18 +107,19 @@ const page = () => {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input
+                    <Input 
                       placeholder="Enter username"
                       {...field}
                       onChange={(e) => {
                         field.onChange(e);
-                        setUsername(e.target.value);
+                        debouncedUsername(e.target.value);
                       }}
                     />
                   </FormControl>
                   {
                     isCheckingUsername && <Loader className="animate-spin"/>
                   }
+                  <p className={`text-sm ${usernameMessage === "username is unique"?'text-green-400':'text-red-400'}`}> {usernameMessage}</p>
                   <FormDescription>
                     This is your public display name.
                   </FormDescription>
@@ -137,7 +134,7 @@ const page = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
+                    <Input 
                       placeholder="Enter Email"
                       {...field}
                     />
@@ -153,7 +150,7 @@ const page = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
+                    <Input 
                       type="password"
                       placeholder="Enter password"
                       {...field}
@@ -166,7 +163,7 @@ const page = () => {
             <Button
                type="submit" 
                disabled={isSubmitting}
-               className=" shadow-lg hover:bg-gray-300 hover:text-black transition-all duration-400 ease-in-out"
+               className=" shadow-sm bg-gradient-to-r text-white  from-yellow-400 via-yellow-600 to-black bg-[length:200%_100%]   bg-right hover:bg-left  hover:text-black transition-all ease-in-out duration-400"
               >
                {
                 isSubmitting?(

@@ -9,6 +9,9 @@ import mongoose from "mongoose";
 export async function GET() {
     await dbConnect();
 
+    //TODO TODO: REMOVE 
+    console.log('here in get-messages -------------------')
+
     const session = await getServerSession(authOptions)
     const user:User = session?.user
 
@@ -21,15 +24,22 @@ export async function GET() {
 
     const userId = new mongoose.Types.ObjectId(user._id)
 
+     //TODO TODO: REMOVE 
+     console.log('here in get-messages  userId-------------------',userId)
+
     try {
+
+        
         const user = await UserModel.aggregate([
-            {$match:{id:userId}},
+            {$match:{_id:userId}},
             {$unwind:'$messages'},
             {$sort:{'messages.createdAt':-1}},
             {$group:{_id:'$_id',messages:{$push:'$messages'}}}
         ])
-
+        
         if(!user || user.length===0){
+            //TODO TODO: REMOVE 
+           console.log('here in get-messages not found user -------------------')
             return Response.json({
                 success:false,
                 messages:"user not found"

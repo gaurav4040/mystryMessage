@@ -10,7 +10,7 @@ export const authOptions:NextAuthOptions=({
       id:"credentials",
       name:"Credentials",
       credentials: {
-        email: { label: "Username",type:"email",placeholder:"jgaurav" },
+        identifier: { label: "Username",type:"text",placeholder:"jgaurav" },
         password: { label: "Password", type: "password" },
       },
    async authorize(credentials:any):Promise<any>{
@@ -18,13 +18,13 @@ export const authOptions:NextAuthOptions=({
         try {
             const user = await UserModel.findOne({
                 $or:[
-                    {email:credentials.identifier.email},
-                    {username:credentials.identifier.username }
+                    {email:credentials.identifier},
+                    {username:credentials.identifier }
                 ]
             });
 
             if(!user){
-                throw new Error("no user found with this email")
+                throw new Error("no user found with this email/username")
             }
             if(!user.isVerified){
                 throw new Error("please verify your account")

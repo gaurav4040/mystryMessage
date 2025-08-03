@@ -3,7 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/context/AuthProvider";
 import { Toaster } from "@/components/ui/sonner"
-
+import Footer from "@/components/Footer";
+import NavBarServer from "@/components/NavBarServer";
 
 
 
@@ -31,10 +32,14 @@ export default function RootLayout({
     <html lang="en">
       <AuthProvider>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black `}
           >
-          {children}
+            <NavBarServer />
+            <main className="min-h-[75vh]">
+              {children}
+            </main>
           <Toaster />
+        <Footer />
         </body>
       </AuthProvider>
     </html>

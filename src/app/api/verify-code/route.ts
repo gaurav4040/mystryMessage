@@ -13,12 +13,13 @@ export async function POST(request:Request) {
 
     try {
         const {username,code} = await request.json();
-
+        decodeURIComponent(username)
+        decodeURIComponent(code)
         const codeResult = verifyCodeSchema.safeParse(code)
         const usernameResult = usernameQuerySchema.safeParse(username)
 
         if(!codeResult.success||!usernameResult.success){
-            const usernameErrors = usernameResult.error?.format().username?._errors || [];
+           const usernameErrors = usernameResult.error?.format().username?._errors || [];
             const codeErrors = codeResult.error?.format().verifyCode?._errors || [];
             const errors =usernameErrors.length>0? usernameErrors.join(',') + ' , ' + codeErrors.join(','):codeErrors.join(',') 
 

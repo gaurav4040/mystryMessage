@@ -120,3 +120,23 @@
     @apply bg-background text-foreground;
   }
 }
+
+.scrollbar-custom {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #d3a901 transparent; /* thumb, track */
+
+  /* WebKit-based browsers */
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #d3a901; /* amber-400 */
+  border-radius: 8px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: transparent;
+}
