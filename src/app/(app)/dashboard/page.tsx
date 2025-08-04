@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
+import { useBaseUrl } from "@/context/BaseUrlContext";
 import { Message } from "@/model/User";
 import { acceptingMessageSchema } from "@/schemas/acceptingMessaageSchema";
 
@@ -115,7 +116,7 @@ export default function App() {
   const username = session?.user.username;
 
   //TODO TODO: do more research
-  const baseUrl = `${window.location.protocol}//${window.location.host}`;
+  const baseUrl = useBaseUrl()
   const profileUrl = `${baseUrl}/u/${username}`;
 
  

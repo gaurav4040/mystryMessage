@@ -18,11 +18,13 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useBaseUrl } from "@/context/BaseUrlContext";
 
 
 export default function Home() {
   const {data:session} = useSession();
-  const baseUrl = `${window.location.protocol}//${window.location.host}`
+
+  const baseUrl =useBaseUrl()
   let profileUrl=''
   const username = session?.user.username
 

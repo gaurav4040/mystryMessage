@@ -24,13 +24,15 @@ import {
 } from "@/components/ui/hover-card";
 
 import { usePathname, useRouter } from "next/navigation";
+import { useBaseUrl } from "@/context/BaseUrlContext";
 
 // import { headers } from "next/headers";
 // import {useLocation} from "react-router-dom"
 // import absoluteUrl from 'next-absolute-url';
 
-export default function NavBarClient({ baseUrl }: { baseUrl: string }) {
+export default function NavBarClient() {
   const { data: session } = useSession();
+  const baseUrl = useBaseUrl()
   const router = useRouter();
   const pathName = usePathname();
   const handleMystryLink = () => {
