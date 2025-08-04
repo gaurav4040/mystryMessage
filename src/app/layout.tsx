@@ -44,7 +44,7 @@ export default async function RootLayout({
             <NavBarClient />
            
             <main className="min-h-[75vh] bg-black">
-              <div className="mt-[-30px] select-none bg-transparent shadow-lg shadow-amber-400">.</div>
+              <div className="mt-[-30px] select-none bg-transparent shadow-lg shadow-amber-400/50">.</div>
               {children}
             </main>
             <div className="bg-transparent shadow-lg shadow-amber-400"><Separator/></div>
