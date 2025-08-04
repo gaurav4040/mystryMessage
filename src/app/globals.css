@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -120,6 +121,24 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  @keyframes enter {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-enter {
+    animation: enter 0.5s ease-out forwards;
+  }
+}
+
 
 .scrollbar-custom {
   scrollbar-width: thin; /* Firefox */
