@@ -4,8 +4,6 @@ import {
   Card,
   CardAction,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -22,11 +20,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
-import { Delete, X } from "lucide-react";
+import {  X } from "lucide-react";
 import { Message } from "@/model/User";
-import { toast } from "sonner";
-import { ApiResponse } from "@/types/ApiResponse";
-import axios from "axios";
+
 
 type MessageCardProps = {
   message: Message;
@@ -39,13 +35,13 @@ export default function MessageCard({
 }: MessageCardProps) {
 
 
-  const handleDeleteConfirm = async () => {
-    const response = await axios.delete<ApiResponse>(
-      `/api/delete-message/${message._id}`
-    );
+  // const handleDeleteConfirm = async () => {
+  //   const response = await axios.delete<ApiResponse>(
+  //     `/api/delete-message/${message._id}`
+  //   );
 
-    toast(response.data.message);
-  };
+  //   toast(response.data.message);
+  // };
 
   const date = new Date(message.createdAt)
 

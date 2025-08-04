@@ -18,7 +18,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-switch": "^1.2.5",
     "@react-email/components": "^0.3.2",
-    "ai": "^4.3.19",
+    "ai": "^5.0.0",
     "axios": "^1.11.0",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
@@ -40,6 +40,7 @@
     "sonner": "^2.0.6",
     "tailwind-merge": "^3.3.1",
     "usehooks-ts": "^3.1.1",
+    "vercel": "^44.7.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {

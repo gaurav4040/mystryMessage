@@ -73,7 +73,7 @@ export default function Home() {
         <main className="flex-grow flex flex-col items-center justify-center px-4 md:px-24 p-4 bg-transparent">
           <section className="text-center mb-8 md:mb-12">
             <h1
-              className="mb-2 text-3xl h-[60px] md:text-5xl font-bold "
+              className="mb-2 text-3xl h-[60px] md:text-5xl font-bold text-white "
             >
               Welcome, <span className="bg-gradient-to-r from-indigo-600 to-rose-600 text-transparent bg-clip-text ">{username}</span> Dive Into Mystry World of Anonymous Conversation
             </h1>
@@ -84,7 +84,7 @@ export default function Home() {
   
           <Carousel
             plugins={[AutoPlay({ delay: 2000 })]}
-            className="w-full max-w-lg"
+            className="w-full max-w-lg bg-transparent"
           >
             <CarouselContent className="-ml-1 w-[150%] bg-transparent">
               {messages.map((message, index) => (
@@ -93,7 +93,7 @@ export default function Home() {
                   className="pl-1 md:basis-1/2 lg:basis-1/3 bg-transparent"
                 >
                   <div className="p-1">
-                    <Card className="bg-white/30">
+                    <Card className="bg-transparent border-none shadow-sm shadow-amber-500">
                       <CardHeader className="font-bold text-gray-600">
                         {message.title}
                       </CardHeader>
@@ -116,8 +116,8 @@ export default function Home() {
   
   
            <Link href={`${profileUrl}`} className="mt-6 mb-10">
-            <Button  className=" shadow-sm font-bold bg-gradient-to-r from-blue-300 via-white to-white bg-[length:200%_100%]  bg-right hover:bg-left transition-all duration-300 ease-in-out cursor-pointer" >
-              <span className="bg-white/10 bg-gradient-to-r from-indigo-600 to-rose-600 text-transparent bg-clip-text ">Click To Send Anonymous Message</span>
+            <Button  className=" shadow-sm font-bold bg-gradient-to-r from-yellow-300 via-yellow-700 to-black bg-[length:200%_100%]  bg-right hover:bg-left transition-all duration-300 ease-in-out cursor-pointer hover:text-black" >
+              <span className=" ">Click To Send Anonymous Message</span>
             </Button>
            </Link>      
   
