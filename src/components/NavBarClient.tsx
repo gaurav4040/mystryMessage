@@ -26,10 +26,6 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { useBaseUrl } from "@/context/BaseUrlContext";
 
-// import { headers } from "next/headers";
-// import {useLocation} from "react-router-dom"
-// import absoluteUrl from 'next-absolute-url';
-
 export default function NavBarClient() {
   const { data: session } = useSession();
   const baseUrl = useBaseUrl()
@@ -39,21 +35,9 @@ export default function NavBarClient() {
     router.replace("/");
   };
 
-  //! console.log(`homeurl===>${homeUrl} &&& currUrl===>${baseUrl}${currUrl}`)
-
-  //* const homeUrl = `${window.location.protocol}//${window.location.host}`
-
-  //*  const {origin} = new URL(useLocation().href)
-  //* const {origin} = absoluteUrl(req)
-
-  //* const hdrs = headers();
-  //* const host = hdrs.get("x-forwarded-host") ?? hdrs.get("host");
-  //* const proto = hdrs.get("x-forwarded-proto") ?? "https";
-  //* const origin = `${proto}://${host}`;
-
   return (
-    <nav className="bg-transparent  p-4 md:p-6 shadow-2xl shadow-yellow-400/30 ">
-      <div className="bg-transparent  container min-h-fit mx-auto flex flex-col md:flex-row justify-between items-center">
+    <nav className="bg-black  p-4 md:p-6 shadow-2xl shadow-yellow-400 ">
+      <div className=" container min-h-fit mx-auto flex flex-col md:flex-row justify-between items-center">
         <a
           className="text-2xl font-extrabold mb-4 md:mb-0 bg-gradient-to-r from-yellow-500  via-amber-600 to-sky-300 text-transparent bg-clip-text cursor-pointer select-none"
           onClick={handleMystryLink}
