@@ -34,7 +34,7 @@ export default function Page() {
     const { content } = data;
 
     try {
-      const response = await axios.post("/api/send-message", {
+      const response = await axios.post("/api/sendmessage", {
         username,
         content,
       });
