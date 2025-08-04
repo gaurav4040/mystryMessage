@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import dbConnect from "@/lib/dbConnect"
 import UserModel from "@/model/User"
 import bcrypt from "bcryptjs"
+import { User } from "next-auth"
 
 export const authOptions:NextAuthOptions=({
   providers: [
@@ -13,11 +14,16 @@ export const authOptions:NextAuthOptions=({
         identifier: { label: "Username",type:"text",placeholder:"jgaurav" },
         password: { label: "Password", type: "password" },
       },
-   async authorize(credentials:any):Promise<any>{
-        await dbConnect()
+      async authorize(
+        credentials: Record<"identifier" | "password", string> | undefined
+      ): Promise<User> {
+        await dbConnect();
         try {
-            const user = await UserModel.findOne({
-                $or:[
+          if (!credentials) {
+            throw new Error("No credentials provided");
+          }
+          const user = await UserModel.findOne({
+            $or: [
                     {email:credentials.identifier},
                     {username:credentials.identifier }
                 ]
@@ -32,14 +38,18 @@ export const authOptions:NextAuthOptions=({
             const isCorrectPassword = await bcrypt.compare(credentials.password,user.password);
 
             if(isCorrectPassword){
-                return user;
+                return user as User;
             }
             else{
                 throw new Error("Incorrect password")
             }
           }
-          catch(err:any){
-            throw new Error(err)
+          catch(error){
+            if (error instanceof Error) {
+              throw error;
+            } else {
+              throw new Error(String(error));
+            }
           }
       },
     }),

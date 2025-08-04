@@ -2,10 +2,14 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 import {z} from 'zod';
 import { verifySchema } from "@/schemas/verifySchema";
-import { usernameQuerySchema } from "../check-username-unique/route";
+import { userNameValidation } from "@/schemas/signUpSchema";
 
 const verifyCodeSchema = z.object({
     verifyCode:verifySchema
+})
+
+const usernameQuerySchema = z.object({
+    username:userNameValidation
 })
 
 export async function POST(request:Request) {

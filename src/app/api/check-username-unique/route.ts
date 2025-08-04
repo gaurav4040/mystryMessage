@@ -14,13 +14,11 @@ import { userNameValidation } from "@/schemas/signUpSchema";
 // ANCHOR dfesfsdfs
 
 
-export const usernameQuerySchema = z.object({
+const usernameQuerySchema = z.object({
     username:userNameValidation
 })
 
 export async function GET(request:Request) {
-
-
 
     await dbConnect();
 
