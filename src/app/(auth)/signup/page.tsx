@@ -27,7 +27,7 @@ import {Loader} from "lucide-react"
 
 
 
-const page = () => {
+const Page = () => {
   const [username, setUsername] = useState("");
   const [usernameMessage, setUsernameMessage] = useState("");
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
@@ -187,4 +187,4 @@ const page = () => {
     </div>
   );
 };
-export default page;
+export default Page;

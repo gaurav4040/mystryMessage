@@ -3,19 +3,22 @@
 
 import MessageCard from "@/components/MessageCard";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Message } from "@/model/User";
 import { acceptingMessageSchema } from "@/schemas/acceptingMessaageSchema";
+
 import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
-import { Loader2, RefreshCcw, Send } from "lucide-react";
+import { Loader2, RefreshCcw } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
 
 
 
@@ -36,14 +39,14 @@ export default function App() {
 
   const { register, watch, setValue } = form;
 
-  const acceptMessages = watch("acceptMessages");
+  const acceptMessages = watch("acceptingMessages");
 
   const fetchAcceptMessage = useCallback(async () => {
     setIsSwitchLoading(true);
 
     try {
       const response = await axios.get<ApiResponse>("/api/accept-messages");
-      setValue("acceptMessages", response.data.isAcceptingMessage);
+      setValue("acceptingMessages", response.data.isAcceptingMessage??false);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       toast.error(
@@ -97,7 +100,7 @@ export default function App() {
         acceptMessages: !acceptMessages,
       });
 
-      setValue('acceptMessages', !acceptMessages);
+      setValue('acceptingMessages', !acceptMessages);
 
       toast(response.data.message);
     } catch (error) {
@@ -158,7 +161,7 @@ export default function App() {
           Copy Your Unique Link
         </h2>{" "}
         <div className="flex items-center">
-          <input
+          <Input
             type="text"
             value={profileUrl}
             disabled
@@ -174,7 +177,7 @@ export default function App() {
       </div>
       <div className="mb-4">
         <Switch
-          {...register("acceptMessages")}
+          {...register("acceptingMessages")}
           checked={acceptMessages}
           onCheckedChange={handleSwitchChange}
           disabled={isSwitchLoading}
@@ -202,9 +205,11 @@ export default function App() {
       </Button>
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
         {messages.length > 0 ? (
-          messages.map((message) => (
-            <MessageCard key={message._id} message={message}
-            onMessageDelete={handleDeleteMessage}
+          messages.map((message:Message) => (
+            <MessageCard
+              key={String(message._id)}
+              message={message}
+              onMessageDelete={handleDeleteMessage}
             />
           ))
         ) : (

@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 
-export default function verifyAccount() {
+export default function VerifyAccount() {
   const router = useRouter();
   const params = useParams<{ username: string }>();
 

@@ -24,7 +24,7 @@ import { signIn } from "next-auth/react";
 
 
 
-const page = () => {
+const Page = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -34,10 +34,10 @@ const page = () => {
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
-    defaultValues: {
-      identifier: "",
-      password: "",
-    },
+    // defaultValues: {
+    //   identifier: "",
+    //   password: "",
+    // },
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>):Promise<void> => {
@@ -137,5 +137,5 @@ const page = () => {
     </div>
   );
 };
-export default page;
+export default Page;
 
