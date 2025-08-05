@@ -1,4 +1,6 @@
-Here’s a sample README.md tailored for your Next.js project, incorporating instructions for using a required API key and standard best practices:
+Screen-Shots to be uploded after completion of this prooject
+
+#UNDER CONSTRUCTION - work is going-on
 
 # mystryMessage
 
