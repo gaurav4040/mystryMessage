@@ -71,8 +71,6 @@ The easiest way to deploy your Next.js app is with [Vercel](https://vercel.com/)
 
 ## License
 
-This project is licensed under the MIT License.
-
 **Note:** Make sure to keep your API key secure and do not share your `.env.local` file publicly.
 
 [1] https://github.com/gaurav4040/mystryMessage
