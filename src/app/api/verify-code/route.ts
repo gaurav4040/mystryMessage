@@ -1,35 +1,28 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
-import {z} from 'zod';
 import { verifySchema } from "@/schemas/verifySchema";
 import { userNameValidation } from "@/schemas/signUpSchema";
 
-const verifyCodeSchema = z.object({
-    verifyCode:verifySchema
-})
 
-const usernameQuerySchema = z.object({
-    username:userNameValidation
-})
 
 export async function POST(request:Request) {
     await dbConnect()
 
     try {
         const {username,code} = await request.json();
+        
+
         decodeURIComponent(username)
         decodeURIComponent(code)
-        const codeResult = verifyCodeSchema.safeParse(code)
-        const usernameResult = usernameQuerySchema.safeParse(username)
+
+        const codeResult = verifySchema.safeParse({code})
+        const usernameResult = userNameValidation.safeParse(username)
 
         if(!codeResult.success||!usernameResult.success){
-           const usernameErrors = usernameResult.error?.format().username?._errors || [];
-            const codeErrors = codeResult.error?.format().verifyCode?._errors || [];
-            const errors =usernameErrors.length>0? usernameErrors.join(',') + ' , ' + codeErrors.join(','):codeErrors.join(',') 
-
+           
             return Response.json({
                 success:false,
-                message:errors.length>0?errors:"invalid username or code format"
+                message:"invalid username or code format"
             },{status:400})
         }
 
@@ -47,6 +40,12 @@ export async function POST(request:Request) {
         const isCodeValid = user.verifyCode === code
         const isCodeNotExpired = new Date(user.verifyCodeExpiry)>new Date()
 
+        if(user.isVerified&&isCodeValid && isCodeNotExpired){
+            return Response.json({
+                success:true,
+                message:" OTP verified successfully"
+            },{status:200})
+        }
         if(isCodeValid && isCodeNotExpired){
             user.isVerified=true
             await user.save()

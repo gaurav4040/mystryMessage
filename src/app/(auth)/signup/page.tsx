@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDebounceCallback } from "usehooks-ts";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { signUpSchema } from "@/schemas/signUpSchema";
 import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
@@ -25,6 +25,12 @@ import { Button } from "@/components/ui/button";
 import {Loader} from "lucide-react"
 
 
+interface userSignUpData {
+  email: string;
+  username: string;
+  password:string
+}
+
 
 
 const Page = () => {
@@ -34,7 +40,9 @@ const Page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const debouncedUsername = useDebounceCallback(setUsername, 400);
   const router = useRouter();
-
+  const searchParams = useSearchParams()
+  const verificationStatus = searchParams.get("verification-status")
+  let userData:userSignUpData;
   // *zod implementation
 
   const form = useForm<z.infer<typeof signUpSchema>>({
@@ -70,21 +78,41 @@ const Page = () => {
     checkUsernameUnique();
   }, [username]);
 
+  if(verificationStatus==="true"){
+
+    const signingUp =async ()=>{
+
+      try {
+        const response = await axios.post<ApiResponse>("/api/signup", userData);
+        
+        if(response.data.success){
+          toast.success(response.data.message);
+        }
+        else{
+          toast.error(response.data.message)
+        }
+ 
+      } catch (error) {
+        const axiosError = error as AxiosError<ApiResponse>;
+        console.error("Error in signup of user", error);
+        toast.error( `error in signup ${axiosError.response?.data.message}`);
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+    signingUp()
+  }
+
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     setIsSubmitting(true);
 
+    userData=data;
     try {
-      const response = await axios.post<ApiResponse>("/api/signup", data);
-
-      toast.success(response.data.message);
-      router.replace(`/verify/${username}`);
-      
+      router.replace(`/verify/${username}?username=${data.username}&email=${data.email}`);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       console.error("Error in signup of user", error);
       toast.error( `error in signup ${axiosError.response?.data.message}`);
-    } finally {
-      setIsSubmitting(false);
     }
   };
   return (
