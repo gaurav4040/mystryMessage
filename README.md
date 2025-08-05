@@ -1,6 +1,6 @@
-Screen-Shots to be uploded after completion of this prooject
+Screen-Shots to be uploded after completion of this project
 
-#UNDER CONSTRUCTION - work is going-on
+# UNDER CONSTRUCTION - work is going-on
 
 # mystryMessage
 
