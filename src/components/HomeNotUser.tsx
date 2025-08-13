@@ -33,12 +33,10 @@ export default function HomeNotUser() {
     <>
       <div className="min-h-[80vh] flex-row flex items-center justify-center px-4 md:px-24 p-4 bg-transparent">
         <section className="text-center mb-8 md:mb-12">
-          <h1 className="text-3xl h-fit md:text-5xl font-bold bg-gradient-to-r from-gray-600 via-white to-gray-600 text-transparent bg-clip-text ">
-            Dive Into{" "}
-            <span className="text-3xl h-fit md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-yellow-400  to-red-600 text-transparent bg-clip-text ">
-              Mystry World 🌐{" "}
-            </span>{" "}
-            of Anonymous Conversation
+          <h1 className="text-3xl h-[110px] md:text-5xl font-bold bg-gradient-to-r from-gray-600 via-white to-gray-600 text-transparent bg-clip-text ">
+            Dive Into <span className="text-3xl h-[fit] md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-yellow-400  to-red-600 text-transparent bg-clip-text ">
+              Mystry World 🌐
+            </span> of Anonymous Messages
           </h1>
           <p className=" mt-3 md:mt-4 text-base md:text-lg text-black/50">
             Explore Mystry Message - Where your identity redivs a Secret
@@ -97,6 +95,7 @@ export default function HomeNotUser() {
           <YieldCard key={index} message={working} />
         ))}
       </div>
+      
     </>
   );
 }
