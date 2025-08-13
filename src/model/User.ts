@@ -26,6 +26,7 @@ export interface User extends Document{
     verifyCode:string
     verifyCodeExpiry:Date
     isVerified:boolean
+    tempVerifyStatus:boolean
     isAcceptingMessage:boolean
     messages:Message[]
 }
@@ -58,6 +59,10 @@ const UserSchema :Schema<User> = new Schema({
         required:[true,"verifyCodeExpiry is required"]
     },
     isVerified:{
+        type:Boolean,
+        default:false
+    },
+    tempVerifyStatus:{
         type:Boolean,
         default:false
     },

@@ -19,9 +19,9 @@ interface ProfileHoverCardProps {
 
 export function ProfileCard({
 
-  name = "Sophie Bennett" ,
-  description = "Product Designer who focuses on simplicity & usability.",
-  image = "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=800&h=800&fit=crop&auto=format&q=80",
+  name = "Mr.Robot" ,
+  description = "UnEthical Hacker.",
+  image = "https://img.freepik.com/premium-photo/anonymous-hacker-surrounded-by-network-glowing-data-generated-by-ai_982893-734.jpg",
   isVerified=false,
 //   followers = 312,
 //   following = 48,
@@ -141,9 +141,9 @@ export function ProfileCard({
       />
 
       {/* Smooth Blur Overlay - Multiple layers for seamless fade */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 via-background/20 via-background/10 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background/90 via-background/60 via-background/30 via-background/15 via-background/8 to-transparent backdrop-blur-[1px]" />
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background/85 via-background/40 to-transparent backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/10 via-background/10 via-background/10 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background/90 via-background/60 via-background/30 via-background/15 via-background/8 to-transparent backdrop-blur-[1px]" />
+      <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-background/85 via-background/40 to-transparent backdrop-blur-sm" />
 
       {/* Content */}
       <motion.div 

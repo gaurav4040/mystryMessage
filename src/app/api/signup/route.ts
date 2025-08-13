@@ -11,6 +11,7 @@ export async function POST(req:Request){
     try {
         
         const {username,email,password} = await req.json()
+        const purpose =`signup verification code for "${username}" is : `
         
         const existingUserVerifiedByUsername = await UserModel.findOne({
             username,
@@ -68,6 +69,7 @@ export async function POST(req:Request){
         const emailResponse = await sendVerificationEmail(
             email,
             username,
+            purpose,
             verifyCode
         )
 

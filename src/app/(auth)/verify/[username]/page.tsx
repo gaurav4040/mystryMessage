@@ -26,6 +26,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import {   REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
+import { useSession } from "next-auth/react";
 
 //TODO TODO:
 // interface userProfileData{
@@ -37,12 +38,13 @@ import {   REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 export default function VerifyAccount() {
   const router = useRouter();
   const params = useParams();
-  
+  const {data:session} =useSession();
+
   const searchParams = useSearchParams()
-  const userData={
-    username:searchParams.get("username"),
-    email:searchParams.get("email")
+  const UpdateRequestUserData={
+    newusername:searchParams.get("newusername"),
   }
+
 
   console.log('params is =====',params)
 
@@ -62,14 +64,14 @@ export default function VerifyAccount() {
   const onSubmit = async (data: z.infer<typeof verifySchema>) => {
     
     try {
-      const response = await axios.post("/api/verify-code", {
+      const response = await axios.post(`/api/verify-code?newusername=${UpdateRequestUserData.newusername}`, {
         username: params.username,
         code: data.code,
       });
 
         if(response.data.success){
           toast.success(response.data.message);
-          router.replace(`/profile?verification-status=true`)
+          router.replace(`/profile?verification-status=true&&newusername=${UpdateRequestUserData.newusername}`)
         }
         else{
           toast.error(response.data.message)
@@ -83,14 +85,30 @@ export default function VerifyAccount() {
   };
 
 
+  const [cooldown, setCooldown] = React.useState(0);
+
+  React.useEffect(() => {
+    if (cooldown > 0) {
+      const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [cooldown]);
+
+
   //TODO TODO:
   const handleSendCodeAgain=async()=>{
 
+    const sendEmailData={
+      username:params.username,
+      email:session?.user.email
+    }
+
     try {
-      const response = await axios.post("/api/send-code-again",userData)
+      const response = await axios.post(`/api/send-code-again?purpose=${UpdateRequestUserData?`New code For getting new username : "${UpdateRequestUserData.newusername}", verification code is : `:""}`,sendEmailData)
 
       if(response.data.success){
         toast.success("code sent again")
+        setCooldown(60);
       }
       else{
         toast.error(response.data.message)
@@ -146,7 +164,7 @@ export default function VerifyAccount() {
               </form>
             </Form>
             <div className="text-white mt-4">
-              Didn&apos;t recived code ?<span><Button onClick={()=>handleSendCodeAgain()} className="ml-2 p-1 hover:text-blue-400">send again</Button></span>
+              Didn&apos;t recived code ?<span><Button onClick={()=>handleSendCodeAgain()} className="ml-2 p-1 hover:text-blue-400"> {cooldown > 0 ? `Send again in ${cooldown}s` : "Send again"}</Button></span>
             </div>
           </div>
         </div>

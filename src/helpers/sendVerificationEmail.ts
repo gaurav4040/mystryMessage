@@ -5,7 +5,7 @@ import VerificationEmail from '../../emails/verificationEmail'
 import { ApiResponse } from '@/types/ApiResponse'
 
 export async function sendVerificationEmail(
-    email:string,username:string,verifyCode:string
+    email:string,username:string,purpose:string|null,verifyCode:string
 ):Promise<ApiResponse>{
     
     try {
@@ -13,7 +13,8 @@ export async function sendVerificationEmail(
             from:'onboarding@resend.dev',
             to:email,
             subject: 'mystry message | verification code',
-            react:VerificationEmail({username,otp:verifyCode})
+            
+            react:VerificationEmail({username,otp:verifyCode,purpose})
         });
         return {success:true,message:'successfully send verification email'}
     } catch (emailError) {

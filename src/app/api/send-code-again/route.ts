@@ -6,6 +6,9 @@ export async function POST(request: Request) {
     try {
 
         const {  username,email } = await request.json();
+        
+        const {searchParams} = new URL(request.url);
+        const purpose = searchParams.get("purpose")
 
         //TODO: const user = await UserModel.findOne({username})
 
@@ -16,10 +19,13 @@ export async function POST(request: Request) {
         //TODO: const email1=user?.email
 
         await UserModel.findOneAndUpdate({email},{verifyCode:verifyCode,verifyCodeExpiry:expiryDate},{new:true})
- 
+        
+       
+
         const emailResponse = await sendVerificationEmail(
             String(email),
             String(username),
+            purpose,
             verifyCode
         )
 

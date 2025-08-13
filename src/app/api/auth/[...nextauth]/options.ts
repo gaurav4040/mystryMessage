@@ -55,13 +55,16 @@ export const authOptions:NextAuthOptions=({
     }),
   ],
   callbacks:{
-    async jwt({token,user}){
+    async jwt({token,user,trigger,session}){
 
         if(user){
             token._id = user._id?.toString()
             token.isVerified = user.isVerified
             token.isAcceptingMessages = user.isAcceptingMessages
             token.username = user.username
+         }
+         if(trigger === "update" &&session?.username){
+            token.username=session.username;
          }
  
         return token

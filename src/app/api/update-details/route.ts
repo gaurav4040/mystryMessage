@@ -11,11 +11,16 @@ export async function POST(request:Request) {
         const {username,email} = await request.json()
         const {searchParams} = new URL(request.url)
         const queryParam ={
-            verificaionStatus:searchParams.get("verification-status")
+            verificationStatus:searchParams.get("verification-status")
         }
 
-        console.log('dhekkk====>>>',username,email,queryParam.verificaionStatus)//TODO TODO:
 
+        if(!queryParam.verificationStatus||queryParam.verificationStatus!=='true'){
+            return Response.json({
+                success:false,
+                message:'verification is not ture'
+            },{status:400});
+        }
         const user = await UserModel.findOneAndUpdate({email},{username:username},{new:true})
         
         await user?.save();
@@ -26,6 +31,11 @@ export async function POST(request:Request) {
             message:"user not found in update details"
             },{status:200})
         }
+
+        return Response.json({
+            success:true,
+            message:"user details Updated successfully"
+        })
 
 
     } catch (error) {

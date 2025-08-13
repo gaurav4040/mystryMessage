@@ -107,7 +107,7 @@ export default function NavBarClient() {
                     Cancel
                   </AlertDialogCancel>
                   <AlertDialogAction
-                    onClick={() => signOut()}
+                    onClick={() =>{ signOut(); router.refresh()}}
                     className="w-full md:w-auto bg-gradient-to-r from-red-600 via-red-100 to-white bg-[length:200%_100%]  text-red-600 bg-right hover:bg-left transition-all ease-in-out duration-400 hover:text-white shadow-sm"
                   >
                     Continue

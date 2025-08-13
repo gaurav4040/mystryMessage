@@ -40,19 +40,27 @@ export async function POST(request:Request) {
         const isCodeValid = user.verifyCode === code
         const isCodeNotExpired = new Date(user.verifyCodeExpiry)>new Date()
 
-        if(user.isVerified&&isCodeValid && isCodeNotExpired){
-            return Response.json({
-                success:true,
-                message:" OTP verified successfully"
-            },{status:200})
-        }
         if(isCodeValid && isCodeNotExpired){
-            user.isVerified=true
-            await user.save()
-            return Response.json({
-                success:true,
-                message:" Account verified successfully"
-            },{status:200})
+
+            if (user.isVerified) {
+                user.tempVerifyStatus = true;
+                await user.save();
+                //TODO TODO:
+                console.log("444444444444444444444444444444444444444444",user.tempVerifyStatus)
+                return Response.json({
+                    success:true,
+                    message:" OTP verified successfully"
+                },{status:200})
+              } else {
+                user.isVerified = true;
+                user.tempVerifyStatus = true;
+                await user.save();
+                return Response.json({
+                    success:true,
+                    message:" Account verified successfully"
+                },{status:200}) 
+              }
+       
         }
         else if(!isCodeValid){
             return Response.json({

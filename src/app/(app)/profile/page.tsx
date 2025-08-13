@@ -24,46 +24,53 @@ import { Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface userProfileData {
-  email: string;
   username: string;
+  email: string;
 }
 
 export default function Page() {
-  const { data: session } = useSession();
+  const { data: session ,update} = useSession();
+  const username = session?.user.username;
+  
   const [isEditable, setIsEditable] = useState(false);
   const [usernameMessage, setUsernameMessage] = useState("");
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const username = session?.user.username;
   const [newUsername, setNewUsername] = useState(username);
+  const [submitVisiblity,setSubmitVisiblity] = useState(false)
+
   const debouncedUsername = useDebounceCallback(setNewUsername, 400);
   const router = useRouter();
   const searchParams = useSearchParams();
   const verificationStatus = searchParams.get("verification-status");
-  let userData:userProfileData;
+  const newNameOfUser = searchParams.get("newusername")
 
-  console.log("session is====>", session?.user);
-
-  const form = useForm({
+  console.log("session is====>", session?.user,newUsername);
+  
+  const form = useForm<userProfileData>({
     values: {
       username: session?.user.username,
       email: session?.user.email,
     },
   });
-
-
-
+  
+  
+  //*unique UserName
   useEffect(() => {
     const checkUsernameUnique = async () => {
+      // if(username===newUsername) return;
       if (username) {
         setIsCheckingUsername(true);
         setUsernameMessage("");
         try {
-          const response = await axios.get(
-            `/api/check-username-unique?username=${newUsername}`
-          );
-
-          setUsernameMessage(response.data.message);
+          if(form.getValues("username")===session?.user.username) return
+          else{
+            console.log("else mai--------------------",newUsername,session?.user.username)
+            const response = await axios.get(
+              `/api/check-username-unique?username=${newUsername}`
+            );
+            setUsernameMessage(response.data.message);
+          }
         } catch (error) {
           const axiosError = error as AxiosError<ApiResponse>;
           setUsernameMessage(
@@ -75,50 +82,27 @@ export default function Page() {
       }
     };
     checkUsernameUnique();
-  }, [newUsername]);
+  }, [username,newUsername]);
 
-  //TODO TODO:
-  if (verificationStatus === "true") {
-    const updateDetails= async() => {
-      try {
-        const response = await axios.post<ApiResponse>(
-          "/api/update-details",
-          userData
-        );
-        if(response.data.success){
-          toast.success(response.data.message);
-          router.replace('/profile')
-        }
-        else{
-          toast.error(response.data.message)
-        }
-      } catch (error) {
-        const axiosError = error as AxiosError<ApiResponse>;
-        console.error("Error in updating Details of user", error);
-        toast.error(
-          `error in updating Details ${axiosError.response?.data.message}`
-        );
-      } finally {
-        setIsSubmitting(false);
-      }
-    }
-
-    updateDetails()
-  }
-
+//*Form Handler
   const onSubmit = async (data: userProfileData) => {
     setIsSubmitting(true);
-    console.log("data===", data);
-    userData=data
+    console.log("data===", data);//TODO TODO:
+
     try {
+      if(session?.user.username===data.username){
+        toast.error("username is same as previous one")
+        return;
+      }
+
       const responseCode = await axios.post<ApiResponse>(
-        "/api/send-code-again",
-        data
+        `/api/send-code-again?purpose=${`For getting new username : "${data.username}", verification code is :`}`,
+        {username:session?.user.username,email:data.email}
       );
 
       if (responseCode.data.success) {
         toast(responseCode.data.message);
-        router.replace(`/verify/${username}?username=${data.username}&email=${data.email}`);
+        router.replace(`/verify/${username}?newusername=${data.username}`);
       }
 
     } catch (error) {
@@ -130,6 +114,66 @@ export default function Page() {
     }
   };
 
+
+  const updateDetailsHandle=async ()=>{
+
+    setNewUsername(newNameOfUser);
+    console.log("newNameOfUser:", newNameOfUser); // use this instead
+  
+    const userData:{username:string;email:string|null} = {
+      username: newNameOfUser?newNameOfUser:"",
+      email: session?.user.email,
+    };
+  
+    form.setValue("username", userData.username); // update form value
+  
+      try {
+        
+        const response = await axios.post<ApiResponse>(
+          "/api/update-details?verification-status=true",
+          userData
+        );
+        if (response.data.success) {
+          toast.success(response.data.message);
+          await update({ username: newNameOfUser });
+          router.replace("/profile");
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        const axiosError = error as AxiosError<ApiResponse>;
+        console.error("Error in updating Details of user", error);
+        toast.error(
+          `Error in updating Details ${axiosError.response?.data.message}`
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+
+
+  useEffect(() => {
+    if (!verificationStatus || verificationStatus !== "true" || !newNameOfUser) return;
+
+    (async () => {
+      try {
+        const response = await axios.post<ApiResponse>("/api/check-temp-verify-status", { email: session?.user.email });
+        if (!response.data.success) {
+          toast.error("error in verify status");
+          console.log("verify status error:", response.data.message);
+          return; // make sure to return here so updateDetailsHandle won't run
+        }
+      } catch (error) {
+        console.log("error in checking verify", error);
+        toast.error(`error in checking verify status ${error}`);
+        return;
+      }
+
+      updateDetailsHandle();
+    })();
+  },[]);
+
+
   return (
     <>
       <div className=" flex flex-col mt-12   min-h-screen bg-transparent  items-center ">
@@ -138,7 +182,7 @@ export default function Page() {
           <div className="flex flex-col ">
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit(onSubmit)}
+                onSubmit={form.handleSubmit(onSubmit  )}
                 className="space-y-6"
               >
                 <FormField
@@ -149,13 +193,15 @@ export default function Page() {
                       <FormLabel>Username</FormLabel>
                       <FormControl>
                         <Input
+                        
                           className={`border-none  mt-2 ${!isEditable ? "bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 focus-visible:ring-0" : "bg-gray-400 text-black"}  `}
                           placeholder="Enter username"
-                          {...field}
+                          {...field} 
                           readOnly={!isEditable}
                           onChange={(e) => {
                             field.onChange(e.target.value);
                             debouncedUsername(e.target.value);
+                            setSubmitVisiblity(true)
                           }}
                         />
                       </FormControl>
@@ -195,7 +241,7 @@ export default function Page() {
                 />
                 <Button
                   type="submit"
-                  disabled={!isEditable || isSubmitting}
+                  disabled={!isEditable || isSubmitting || usernameMessage==="username already taken"|| !submitVisiblity}
                   className="mt-6 mx-4 shadow-sm bg-gradient-to-r  from-gray-400 via-gray-600 to-gray-900 bg-[length:200%_100%]   bg-right hover:bg-left  hover:text-black transition-all ease-in-out duration-400"
                 >
                   Submit
