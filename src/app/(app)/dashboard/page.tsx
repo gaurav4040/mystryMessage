@@ -128,14 +128,14 @@ export default function App() {
   if (!session || !session.user) {
   
     return (
-      <main className="min-h-[80vh] flex-grow flex flex-col items-center justify-center px-4 md:px-24 p-4 bg-transparent">
+      <main className="min-h-[90vh] flex-grow flex flex-col items-center justify-center px-4 md:px-24 p-4 bg-transparent">
         <section className="text-center mb-8 md:mb-12">
           <div className=" flex flex-row items-center text-3xl h-[70px] md:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-rose-600 text-transparent bg-clip-text ">
             Get Started With Mystry Message →
             <span>
               <Link className="p-0" href={`/signin`}>
-                <Button className=" ml-4 p-0 shadow-sm font-bold bg-gradient-to-r from-yellow-300 via-yellow-600 to-black bg-[length:200%_100%]  bg-right hover:bg-left transition-all duration-300  hover:text-lg ease-in-out cursor-pointer">
-                  <span className=" p-3 hover:text-black bg-gradient-to-r from-sky-300 to-red-600 text-transparent bg-clip-text">
+                <Button className=" ml-4 p-0 shadow-md shadow-gray-400 font-bold bg-gradient-to-r from-gray-300 via-gray-600 to-gray-900 bg-[length:200%_100%]  bg-right hover:bg-left transition-all duration-300  hover:text-lg ease-in-out cursor-pointer">
+                  <span className=" p-5 hover:text-black bg-gradient-to-r from-sky-300 to-red-600 text-transparent bg-clip-text">
                     SignIn
                   </span>
                 </Button>
@@ -151,14 +151,14 @@ export default function App() {
   }
 
   return (
-    <div className="my-8 mx-4 shadow-sm shadow-amber-400 md:mx-8 lg:mx-auto p-6 bg-black rounded w-full max-w-6xl">
+    <div className="mt-10  mx-4  shadow-white md:mx-8 lg:mx-auto p-6 bg-gradient-to-br from-gray-900  to-gray-800 rounded w-[85vw] max-w-[90vw] ">
       <h1 className="text-4xl bg-gradient-to-r from-yellow-500 text-transparent bg-clip-text font-bold mb-4">
         {" "}
         User Dashboard
       </h1>
 
       <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2 text-black">
+        <h2 className="text-lg font-semibold mb-2 text-white ">
           Copy Your Unique Link
         </h2>{" "}
         <div className="flex items-center">
@@ -204,7 +204,7 @@ export default function App() {
           <RefreshCcw className="h-4 w-4 bg-white/70" />
         )}
       </Button>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-1 ">
         {messages.length > 0 ? (
           messages.map((message:Message) => (
             <MessageCard

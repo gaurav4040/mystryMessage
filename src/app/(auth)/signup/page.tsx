@@ -117,7 +117,7 @@ const Page = () => {
   };
   return (
     <div className="flex justify-center items-center min-h-screen bg-transparent">
-      <div className="w-full max-w-md p-8 space-y-8 text-yellow-500 rounded-lg shadow-md shadow-amber-400">
+      <div className="w-full max-w-md p-8 space-y-8 text-yellow-500 rounded-lg shadow-md shadow-gray-400">
         <div className="text-center">
           <h1 className="text-4xl bg-gradient-to-r from-indigo-600 via-yellow-400 to-rose-600 text-transparent bg-clip-text font-extrabold tracking-tight lg:text-5xl mb-6">
             {" "}
@@ -191,7 +191,7 @@ const Page = () => {
             <Button
                type="submit" 
                disabled={isSubmitting}
-               className=" shadow-sm bg-gradient-to-r text-white  from-yellow-400 via-yellow-600 to-black bg-[length:200%_100%]   bg-right hover:bg-left  hover:text-black transition-all ease-in-out duration-400"
+               className="mx-1 w-full md:w-auto shadow-md shadow-gray-400 border-none  text-white bg-gradient-to-r from-gray-300 via-gray-600 to-gray-800 bg-[length:200%_100%] bg-right hover:bg-left transition-all ease-in-out duration-400  hover:text-black hover:border cursor-pointer"
               >
                {
                 isSubmitting?(
@@ -203,7 +203,7 @@ const Page = () => {
                </Button>
           </form>
         </Form>
-        <div className="text-center mt-4">
+        <div className="text-center mt-4 text-gray-400">
           <p>
             Already a member?{' '}
             <Link href={"/signin"} className="text-blue-600 hover:text-blue-900 transition-all duration-400">

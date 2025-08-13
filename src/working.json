@@ -1,0 +1,18 @@
+
+
+[
+    {   
+        "steps":"Step - 1",
+        "header":"SignUp/SignIn",
+        "content":"SignUp or SignIn into mystry message to explore more"
+    },{
+        "steps":"Step - 2",
+        "header":"copy your unique Link",
+        "content":"copy your unique Link and share it with others"
+    },
+    {
+        "steps":"Step - 3",
+        "header":"Send and Accept Messages",
+        "content":"Send Anonymous Messages to others via their unique Link and Accept Anonymous Message via your unique Link"
+    }
+]

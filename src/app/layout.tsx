@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import { BaseUrlProvider } from "@/context/BaseUrlContext";
 import { headers } from "next/headers";
 import NavBarClient from "@/components/NavBarClient";
-import { Separator } from "@/components/ui/separator";
+// import { Separator } from "@/components/ui/separator";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,16 +38,15 @@ export default async function RootLayout({
     <html lang="en">
       <AuthProvider>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased   `}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white  `}
         >
           <BaseUrlProvider value={baseUrl}>
             <NavBarClient />
-           
-            <main className="min-h-[75vh] bg-black">
-              <div className="mt-[-30px] select-none bg-transparent shadow-lg shadow-amber-400/50">.</div>
+            <main className=" min-h-[100vh] pb-10 bg-black">
+              <div className="mt-[-30px] select-none bg-transparent shadow-lg shadow-gray-600/70">.</div>
               {children}
             </main>
-            <div className="bg-transparent shadow-lg shadow-amber-400"><Separator/></div>
+            {/* <div className="bg-transparent shadow-lg shadow-amber-400"><Separator/></div> */}
           </BaseUrlProvider>
           <Toaster />
           <Footer />

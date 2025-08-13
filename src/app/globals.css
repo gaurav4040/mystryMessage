@@ -142,7 +142,7 @@
 
 .scrollbar-custom {
   scrollbar-width: thin; /* Firefox */
-  scrollbar-color: #d3a901 transparent; /* thumb, track */
+  scrollbar-color: #e6e5e1 transparent; /* thumb, track */
 
   /* WebKit-based browsers */
 }

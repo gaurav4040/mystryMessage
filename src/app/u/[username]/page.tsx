@@ -81,7 +81,7 @@ export default function Page() {
             <h1 className="mt-10  text-3xl h-[60px] md:text-5xl font-bold bg-gradient-to-r from-fuchsia-600 via-amber-400 to-indigo-600 text-transparent bg-clip-text">
               Message Anyone Anonymously 🔗
             </h1>
-            <div className="mt-10 shadow-sm/70 shadow-amber-400 p-6 rounded-lg">
+            <div className="mt-10 bg-gray-900 shadow-md shadow-gray-600 p-6 rounded-lg">
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
@@ -111,7 +111,7 @@ export default function Page() {
                   />
                   <Button
                     type="submit"
-                    className="mt-2 ml-4 text-gray-300  font-bold bg-gradient-to-r from-white via-gray-600 to-gray-900 bg-[length:200%_100%]  bg-right hover:bg-left hover:text-black   transition-all duration-300 ease-in-out cursor-pointer"
+                    className="mt-2 ml-4 text-gray-300 shadow-md shadow-gray-600 font-bold bg-gradient-to-r from-white via-gray-800 to-gray-900 bg-[length:200%_100%]  bg-right hover:bg-left hover:text-black   transition-all duration-300 ease-in-out cursor-pointer"
                   >
                     Send <Send />
                   </Button>
@@ -121,9 +121,9 @@ export default function Page() {
                   <Link href={"/send-message"}>
                     <Button
                       type="button"
-                      className="mt-[-20px] ml-4 p-0 font-bold bg-gradient-to-r from-yellow-400 via-gray-600 to-gray-900 bg-[length:200%_100%]  bg-right hover:bg-left hover:p-0 hover:text-lg transition-all duration-300 ease-in-out cursor-pointer "
+                      className="mt-[-20px] ml-4 p-0 font-bold bg-gradient-to-r from-white via-gray-800 to-gray-900 bg-[length:200%_100%] shadow-md shadow-gray-600 bg-right hover:bg-left hover:p-0  transition-all duration-300 ease-in-out cursor-pointer "
                     >
-                      <span className="p-3 hover:text-black bg-gradient-to-r from-amber-600 to-yellow-400 text-transparent bg-clip-text ">
+                      <span className="p-3 hover:text-black bg-gradient-to-r from-white to-yellow-400 text-transparent bg-clip-text ">
                         Message Some One else
                       </span>
                     </Button>
@@ -132,11 +132,11 @@ export default function Page() {
               </Form>
             </div>
           </div>
-          <div className="mb-10 shadow-sm/70 shadow-amber-400 p-6 rounded-lg">
+          <div className="mb-10 bg-gray-900 shadow-md shadow-gray-600 p-6 rounded-lg">
             <Button
               type="button"
               onClick={handleSuggestMessage}
-              className="text-gray-300  font-bold bg-gradient-to-r from-white via-gray-600 to-gray-900 bg-[length:200%_100%]  bg-right hover:bg-left hover:text-black   transition-all duration-300 ease-in-out cursor-pointer"
+              className="text-gray-300 shadow-md shadow-gray-600 font-bold bg-gradient-to-r from-white via-gray-800 to-gray-900 bg-[length:200%_100%]  bg-right hover:bg-left hover:text-black   transition-all duration-300 ease-in-out cursor-pointer"
             >
               Suggest Messages
             </Button>
@@ -178,7 +178,7 @@ export default function Page() {
                             .map((word, i) => (
                               <>
                                 <motion.span
-                                  key={i}
+                                  key={i++}
                                   className="inline-block"
                                   variants={{
                                     hidden: { opacity: 0, y: 10 },

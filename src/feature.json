@@ -1,0 +1,18 @@
+[
+    {
+        "imageLink":"/anonymous.webp",
+        "header":"Anonymous"
+    },
+    {
+        "imageLink":"/secure.png",
+        "header":"Secure"
+    },
+    {
+        "imageLink":"/fast.jpeg",
+        "header":"Fast"
+    },
+    {
+        "imageLink":"/fun.jpg",
+        "header":"Fun"
+    }
+]
