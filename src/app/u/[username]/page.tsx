@@ -16,7 +16,7 @@ import { toast } from "sonner";
 import z from "zod";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios, { Axios } from "axios";
 import { Textarea } from "@/components/ui/textarea";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -48,8 +48,9 @@ export default function Page() {
         toast(response.data.message);
       }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error:any) {
-      toast.error(error.response.data);
+    } catch (err:any) {
+      console.log(`error in sending message page &&&& `, err);
+      // toast.error(err.response.data);
     }
   }
 
