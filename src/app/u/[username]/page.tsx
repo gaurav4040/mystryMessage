@@ -47,9 +47,9 @@ export default function Page() {
       if (response.data.success) {
         toast(response.data.message);
       }
-    } catch (error) {
-      console.log(`error in sending message page &&&& `, error);
-      toast.error("some thing went wrong");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error:any) {
+      toast.error(error.response.data);
     }
   }
 

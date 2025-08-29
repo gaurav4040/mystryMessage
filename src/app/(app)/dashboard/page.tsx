@@ -47,7 +47,7 @@ export default function App() {
 
     try {
       const response = await axios.get<ApiResponse>("/api/accept-messages");
-      setValue("acceptingMessages", response.data.isAcceptingMessage??false);
+      setValue("acceptingMessages", response.data.isAcceptingMessage?true:false);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       toast.error(
