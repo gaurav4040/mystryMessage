@@ -47,12 +47,16 @@ export default function Page() {
       if (response.data.success) {
         toast(response.data.message);
       }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err:any) {
-      console.log(`error in sending message page &&&& `, err);
-      // toast.error(err.response.data);
+
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response) {
+        console.log(`error in sending message page &&&& `, err.response.data);
+        toast.error(err.response.data);
+      } else {
+        console.log("An unexpected error occurred in sending message page", err);
+        toast.error("An unexpected error occurred.");
+      }
     }
-  }
 
   const handleSuggestMessage = async () => {
     try {
