@@ -16,7 +16,7 @@ import { toast } from "sonner";
 import z from "zod";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios, { Axios } from "axios";
+import axios from "axios";
 import { Textarea } from "@/components/ui/textarea";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -48,7 +48,7 @@ export default function Page() {
         toast(response.data.message);
       }
 
-    } catch (err: unknown) {
+    } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         console.log(`error in sending message page &&&& `, err.response.data);
         toast.error(err.response.data);
@@ -57,6 +57,7 @@ export default function Page() {
         toast.error("An unexpected error occurred.");
       }
     }
+  }
 
   const handleSuggestMessage = async () => {
     try {
