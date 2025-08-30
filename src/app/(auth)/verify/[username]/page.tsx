@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 import { useSession } from "next-auth/react";
+import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
 
 //TODO TODO:
 // interface userProfileData{
@@ -102,17 +103,50 @@ export default function VerifyAccount() {
     };
 
     try {
-      const response = await axios.post(
+      const code = await axios.post(
         `/api/send-code-again?purpose=${UpdateRequestUserData ? `New code For getting new username : "${UpdateRequestUserData.newusername}", verification code is : ` : ""}`,
         sendEmailData
       );
 
-      if (response.data.success) {
-        toast.success("code sent again");
-        setCooldown(60);
-      } else {
-        toast.error(response.data.message);
-      }
+        const email=sendEmailData.email
+        const username=sendEmailData.username
+        const purpose=UpdateRequestUserData ? `New code For getting new username : ${UpdateRequestUserData.newusername}", verification code is : ` :"New verification Code is "
+        const verifyCode=code.data.verifyCode
+        const time =code.data.expiryDate.toLocaleString()
+
+        const date = new Date(time);
+
+     
+        const ist = new Date(date.getTime());
+      
+        // format: DD-MM-YYYY HH:mm
+        const dd = String(ist.getDate()).padStart(2, "0");
+        const mm = String(ist.getMonth() + 1).padStart(2, "0"); // months start 0
+        const yyyy = ist.getFullYear();
+      
+        const hh = String(ist.getHours()).padStart(2, "0");
+        const min = String(ist.getMinutes()).padStart(2, "0");
+      
+        const sTime = `${dd}-${mm}-${yyyy} ${hh}:${min}`
+
+        if (typeof email === "string" && typeof username === "string") {
+          const response = await sendVerificationEmail(
+            email,
+            username,
+            purpose,
+            verifyCode,
+            sTime
+          );
+          if (response.success) {
+            toast.success("code sent again");
+            setCooldown(60);
+          } else {
+            toast.error(response.message);
+          }
+        } else {
+          throw new Error("Email or username is undefined");
+        }
+
     } catch (error) {
       console.log("error in code sent again", error);
       toast.error(" error in code sent again");
@@ -174,6 +208,7 @@ export default function VerifyAccount() {
               Didn&apos;t recived code ?
               <span>
                 <Button
+                disabled={cooldown>0 ? true:false}
                   onClick={() => handleSendCodeAgain()}
                   className="ml-2 p-1 hover:text-blue-400"
                 >
@@ -195,7 +230,11 @@ export default function VerifyAccount() {
                 </span>
               </div>
             ) : null}
+            <div className="text-gray-600">
+            Do not refresh the page
           </div>
+          </div>
+          
         </div>
       </div>
     </div>

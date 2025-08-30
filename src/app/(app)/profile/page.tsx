@@ -83,7 +83,7 @@ export default function Page() {
       }
     };
     checkUsernameUnique();
-  }, [username,newUsername]);
+  }, [username, newUsername, form, session?.user.username]);
 
 //*Form Handler
   const onSubmit = async (data: userProfileData) => {
@@ -105,11 +105,28 @@ export default function Page() {
       const username=session?.user.username
       const purpose=`For getting new username : "${data.username}", verification code is :`
       const verifyCode=code.data.verifyCode
+      const time =code.data.expiryDate.toLocaleString()
+      const date = new Date(time);
+
+     
+        const ist = new Date(date.getTime());
+      
+        // format: DD-MM-YYYY HH:mm
+        const dd = String(ist.getDate()).padStart(2, "0");
+        const mm = String(ist.getMonth() + 1).padStart(2, "0"); // months start 0
+        const yyyy = ist.getFullYear();
+      
+        const hh = String(ist.getHours()).padStart(2, "0");
+        const min = String(ist.getMinutes()).padStart(2, "0");
+      
+        const sTime = `${dd}-${mm}-${yyyy} ${hh}:${min}`
+
       const response = await sendVerificationEmail(
         email,
         username,
         purpose,
-        verifyCode
+        verifyCode,
+        sTime
       )
 
 
@@ -184,6 +201,7 @@ export default function Page() {
 
       updateDetailsHandle();
     })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
 

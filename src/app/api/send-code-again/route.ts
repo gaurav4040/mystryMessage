@@ -40,7 +40,8 @@ export async function POST(request: Request) {
         return Response.json({
             success:true,
             message:"code generated successfully",
-            verifyCode
+            verifyCode,
+            expiryDate
         },{ status:200}) 
 
     } catch (error) {

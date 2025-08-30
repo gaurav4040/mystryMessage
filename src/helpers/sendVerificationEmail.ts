@@ -5,7 +5,8 @@ export async function sendVerificationEmail(
   email: string,
   username: string,
   purpose: string | null,
-  verifyCode: string
+  verifyCode: string,
+  time:string
 ): Promise<{ success: boolean; message: string }> {
   try {
     const response: EmailJSResponseStatus = await emailjs.send(
@@ -15,7 +16,8 @@ export async function sendVerificationEmail(
         to_email: email,
         username: username,
         otp: verifyCode,
-        purpose
+        purpose,
+        time
       },
       process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
     );
