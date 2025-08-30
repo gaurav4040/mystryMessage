@@ -1,7 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 import bcrypt from "bcryptjs"
-import  {sendVerificationEmail}  from "@/helpers/sendVerificationEmail";
+// import  {sendVerificationEmail}  from "@/helpers/sendVerificationEmail";
 
 
 export async function POST(req:Request){
@@ -11,7 +11,7 @@ export async function POST(req:Request){
     try {
         
         const {username,email,password} = await req.json()
-        const purpose =`signup verification code for "${username}" is : `
+        // const purpose =`signup verification code for "${username}" is : `
         
         const existingUserVerifiedByUsername = await UserModel.findOne({
             username,
@@ -66,19 +66,19 @@ export async function POST(req:Request){
             await newUser.save();
 
         }
-        const emailResponse = await sendVerificationEmail(
-            email,
-            username,
-            purpose,
-            verifyCode
-        )
+        // const emailResponse = await sendVerificationEmail(
+        //     email,
+        //     username,
+        //     purpose,
+        //     verifyCode
+        // )
 
-        if(!emailResponse.success){
-            return Response.json({
-                success:false,
-                message:emailResponse.message
-            },{ status:500}) 
-        }
+        // if(!emailResponse.success){
+        //     return Response.json({
+        //         success:false,
+        //         message:emailResponse.message
+        //     },{ status:500}) 
+        // }
         return Response.json({
             success:true,
             message:"successfully registed new user"

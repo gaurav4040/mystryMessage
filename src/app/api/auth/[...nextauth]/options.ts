@@ -32,9 +32,10 @@ export const authOptions:NextAuthOptions=({
             if(!user){
                 throw new Error("no user found with this email/username")
             }
-            if(!user.isVerified){
-                throw new Error("please verify your account")
-            }
+            //ANCHOR VERIFICATION COMPULSORY
+            // if(!user.isVerified){
+            //     throw new Error("please verify your account")
+            // }
             const isCorrectPassword = await bcrypt.compare(credentials.password,user.password);
 
             if(isCorrectPassword){

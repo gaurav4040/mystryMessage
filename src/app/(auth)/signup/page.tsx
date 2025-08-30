@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDebounceCallback } from "usehooks-ts";
 import { toast } from "sonner";
-import { useSearchParams, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import { signUpSchema } from "@/schemas/signUpSchema";
 import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {Loader} from "lucide-react"
+import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
 
 
 interface userSignUpData {
@@ -40,8 +41,8 @@ const Page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const debouncedUsername = useDebounceCallback(setUsername, 400);
   const router = useRouter();
-  const searchParams = useSearchParams()
-  const verificationStatus = searchParams.get("verification-status")
+  //ANCHOR const searchParams = useSearchParams()
+  // const verificationStatus = searchParams.get("verification-status")
   let userData:userSignUpData;
   // *zod implementation
 
@@ -78,41 +79,69 @@ const Page = () => {
     checkUsernameUnique();
   }, [username]);
 
-  if(verificationStatus==="true"){
+  //ANCHOR if(verificationStatus==="true"){
 
-    const signingUp =async ()=>{
+  //   const signingUp =async ()=>{
 
-      try {
-        const response = await axios.post<ApiResponse>("/api/signup", userData);
+  //     try {
+  //       const response = await axios.post<ApiResponse>("/api/signup?", userData);
         
-        if(response.data.success){
-          toast.success(response.data.message);
-        }
-        else{
-          toast.error(response.data.message)
-        }
+  //       if(response.data.success){
+  //         toast.success(response.data.message);
+  //       }
+  //       else{
+  //         toast.error(response.data.message)
+  //       }
  
-      } catch (error) {
-        const axiosError = error as AxiosError<ApiResponse>;
-        console.error("Error in signup of user", error);
-        toast.error( `error in signup ${axiosError.response?.data.message}`);
-      } finally {
-        setIsSubmitting(false);
-      }
-    }
-    signingUp()
-  }
+  //     } catch (error) {
+  //       const axiosError = error as AxiosError<ApiResponse>;
+  //       console.error("Error in signup of user", error);
+  //       toast.error( `error in signup ${axiosError.response?.data.message}`);
+  //     } finally {
+  //       setIsSubmitting(false);
+  //     }
+  //   }
+  //   signingUp()
+  // }
 
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     setIsSubmitting(true);
 
     userData=data;
+    console.log("data=========================",userData)
     try {
-      router.replace(`/verify/${username}?username=${data.username}&email=${data.email}`);
+      const signUpRes = await axios.post<ApiResponse>("/api/signup?", userData);
+
+      if(signUpRes.data.success){
+        
+        const code = await axios.post(`/api/send-code-again`,{username:userData.username,email:userData.email});
+        const email=userData.email
+        const username=userData.username
+        const purpose=`signup verification code for ${userData.username} is : `
+        const verifyCode=code.data.verifyCode
+        const response = await sendVerificationEmail(
+          email,
+          username,
+        purpose,
+        verifyCode
+      )
+      console.log('2222222222222222222222222222222222222222222222')//ANCHOR
+      
+      if(response.success){
+        toast.success('code sent');
+        router.replace(`/verify/${username}?username=${data.username}&email=${data.email}&field=signup`);
+      }
+      else{
+        toast.error('error in sending code')
+      }
+      }      
+
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       console.error("Error in signup of user", error);
       toast.error( `error in signup ${axiosError.response?.data.message}`);
+    }finally{
+      setIsSubmitting(false)
     }
   };
   return (

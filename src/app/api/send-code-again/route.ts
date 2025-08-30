@@ -1,14 +1,15 @@
-import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
+// import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
 import UserModel from "@/model/User";
 
 export async function POST(request: Request) {
 
     try {
 
-        const {  username,email } = await request.json();
+        // const {  username,email } = await request.json();
+        const {  email } = await request.json();
         
-        const {searchParams} = new URL(request.url);
-        const purpose = searchParams.get("purpose")
+        // const {searchParams} = new URL(request.url);
+        // const purpose = searchParams.get("purpose");
 
         //TODO: const user = await UserModel.findOne({username})
 
@@ -22,23 +23,24 @@ export async function POST(request: Request) {
         
        
 
-        const emailResponse = await sendVerificationEmail(
-            String(email),
-            String(username),
-            purpose,
-            verifyCode
-        )
+        // const emailResponse = await sendVerificationEmail(
+        //     String(email),
+        //     String(username),
+        //     purpose,
+        //     verifyCode
+        // )
 
-        if(!emailResponse.success){
-            return Response.json({
-                success:false,
-                message:emailResponse.message
-            },{ status:400}) 
-        }
+        // if(!emailResponse.success){
+        //     return Response.json({
+        //         success:false,
+        //         message:emailResponse.message
+        //     },{ status:400}) 
+        // }
 
         return Response.json({
             success:true,
-            message:"code sent successfully"
+            message:"code generated successfully",
+            verifyCode
         },{ status:200}) 
 
     } catch (error) {

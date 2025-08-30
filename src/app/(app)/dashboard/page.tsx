@@ -69,8 +69,12 @@ export default function App() {
          //TODO TODO: REMOVE 
         console.log('fetch messsageResponse ==>>>',response.data.messages)
 
-        setMessages(response.data.messages || []);
-
+        if(!response.data.success){
+          toast.error(response.data.message)
+        }
+        else{
+          setMessages(response.data.messages || []);
+        }
         if (refresh) {
           toast.loading("Showing latest messages");
         }

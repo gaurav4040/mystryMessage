@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion"
 import { Check  } from "lucide-react"
+import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface ProfileHoverCardProps {
@@ -174,7 +175,7 @@ export function ProfileCard({
               </motion.span>
             ))}
           </motion.h2>
-          {isVerified && (
+          {isVerified ? (
             <motion.div 
               variants={itemVariants as import("framer-motion").Variants}
               className="flex items-center justify-center w-4 h-4 rounded-full bg-green-500 text-white"
@@ -186,7 +187,21 @@ export function ProfileCard({
             >
               <Check className="w-2.5 h-2.5" />
             </motion.div>
-          )}
+          ):(
+            <motion.div 
+              variants={itemVariants as import("framer-motion").Variants}
+              className="flex items-center justify-center w-4 h-4 rounded-full bg-red-500 text-white"
+              whileHover={{ 
+                scale: 1.1, 
+                rotate: 5,
+                transition: { type: "spring", stiffness: 400, damping: 20 }
+              }}
+            >
+              <X className="w-2.5 h-2.5 " />
+            </motion.div>
+          )
+        
+        }
         </motion.div>
 
         {/* Description */}
