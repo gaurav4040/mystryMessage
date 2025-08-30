@@ -125,7 +125,6 @@ const Page = () => {
         purpose,
         verifyCode
       )
-      console.log('2222222222222222222222222222222222222222222222')//ANCHOR
       
       if(response.success){
         toast.success('code sent');

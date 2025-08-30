@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
 
 interface userProfileData {
   username: string;
@@ -94,14 +95,26 @@ export default function Page() {
         toast.error("username is same as previous one")
         return;
       }
-
-      const responseCode = await axios.post<ApiResponse>(
-        `/api/send-code-again?purpose=${`For getting new username : "${data.username}", verification code is :`}`,
+      
+      const code = await axios.post(
+        `/api/send-code-again`,
         {username:session?.user.username,email:data.email}
       );
 
-      if (responseCode.data.success) {
-        toast(responseCode.data.message);
+      const email=data.email
+      const username=session?.user.username
+      const purpose=`For getting new username : "${data.username}", verification code is :`
+      const verifyCode=code.data.verifyCode
+      const response = await sendVerificationEmail(
+        email,
+        username,
+        purpose,
+        verifyCode
+      )
+
+
+      if (response.success) {
+        toast(response.message);
         router.replace(`/verify/${username}?newusername=${data.username}`);
       }
 
