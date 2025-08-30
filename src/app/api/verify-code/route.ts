@@ -54,7 +54,9 @@ export async function POST(request:Request) {
               } else {
                 user.isVerified = true;
                 user.tempVerifyStatus = true;
+                user.set("expireAt",undefined);
                 await user.save();
+                
                 return Response.json({
                     success:true,
                     message:" Account verified successfully"

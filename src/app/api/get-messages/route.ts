@@ -10,26 +10,21 @@ export async function GET() {
     await dbConnect();
 
     //TODO TODO: REMOVE 
-    console.log('here in get-messages -------------------')
-
+    
     const session = await getServerSession(authOptions)
     const user:User = session?.user
-
+    
     if(!session||!session.user){
         return Response.json({
             success:false,
             message:"Not Authenticated"
         },{status:401})
     }
-
+    
     const userId = new mongoose.Types.ObjectId(user._id)
-
-     //TODO TODO: REMOVE 
-     console.log('here in get-messages  userId-------------------',userId)
-
+    
+    
     try {
-
-        
         const user = await UserModel.aggregate([
             {$match:{_id:userId}},
             {$unwind:'$messages'},
@@ -37,14 +32,18 @@ export async function GET() {
             {$group:{_id:'$_id',messages:{$push:'$messages'}}}
         ])
         
-        if(!user || user.length===0){
-            //TODO TODO: REMOVE 
-           console.log('here in get-messages not found user -------------------')
+        if(!user ){
             return Response.json({
                 success:false,
                 messages:"user not found"
             },{status:404})
         }
+        if(user.length===0){
+            return Response.json({
+                success:false,
+                message:"messages not found"
+            },{status:404})
+        }      
         return Response.json({
             success:true,
             messages:user[0].messages

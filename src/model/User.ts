@@ -29,6 +29,7 @@ export interface User extends Document{
     tempVerifyStatus:boolean
     isAcceptingMessage:boolean
     messages:Message[]
+    expireAt?:Date|null
 }
 
 
@@ -70,6 +71,7 @@ const UserSchema :Schema<User> = new Schema({
         type:Boolean,
         default:true
     },
+    expireAt: { type: Date, default: () => new Date(Date.now() + 24 * 60 * 60 * 1000) } ,
     messages:[MessageSchema]
 })
 
