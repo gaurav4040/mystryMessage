@@ -48,7 +48,7 @@ export default function Page() {
         toast(response.data.message);
       }
 
-    } catch (err) {
+    } catch (err:unknown) {
       if (axios.isAxiosError(err) && err.response) {
         console.log(`error in sending message page &&&& `, err.response.data);
         toast.error(err.response.data);

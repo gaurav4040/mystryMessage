@@ -10,7 +10,7 @@ export async function sendVerificationEmail(
     
     try {
         await resend.emails.send({
-            from:'onboarding@resend.dev',
+            from:'jangragaurav593@gmail.com',
             to:email,
             subject: 'mystry message | verification code',
             
