@@ -21,12 +21,13 @@ export async function POST(request:Request) {
         }
 
         if(!user.isAcceptingMessage){
+            console.log('11111111111111111111111111111111111111')
             return Response.json({
                 success:false,
                 message:"currently this user not accepting messages"
             },{status:403})
         }
-
+        console.log('222222222222222222222222222222222222222222')
         const newMessage = {content,createdAt:new Date()}
         user.messages.push(newMessage as Message)
         await user.save()

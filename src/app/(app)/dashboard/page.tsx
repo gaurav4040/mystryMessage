@@ -46,8 +46,10 @@ export default function App() {
     setIsSwitchLoading(true);
 
     try {
-      const response = await axios.get<ApiResponse>("/api/accept-messages");
-      setValue("acceptingMessages", response.data.isAcceptingMessage?true:false);
+      const response = await axios.get("/api/accept-messages");
+      if(response.data.success){
+        setValue("acceptingMessages", response.data.isAcceptingMessages===true?true:false);
+      }
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       toast.error(
@@ -93,7 +95,6 @@ export default function App() {
 
   useEffect(() => {
     if (!session || !session.user) return;
-
     fetchMessage();
     fetchAcceptMessage();
   }, [session, setValue, fetchAcceptMessage, fetchMessage]);

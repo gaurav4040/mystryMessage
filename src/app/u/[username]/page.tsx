@@ -45,13 +45,13 @@ export default function Page() {
       });
       console.log("response==>>", response.data);
       if (response.data.success) {
-        toast(response.data.message);
+        toast.success(response.data.message);
       }
 
     } catch (err:unknown) {
       if (axios.isAxiosError(err) && err.response) {
         console.log(`error in sending message page &&&& `, err.response.data);
-        toast.error(err.response.data);
+        toast.error(err.response.data.message);
       } else {
         console.log("An unexpected error occurred in sending message page", err);
         toast.error("An unexpected error occurred.");
@@ -202,7 +202,7 @@ export default function Page() {
                 ))
               ) : (
                 <>
-                  {console.log("here in else div")}
+                  
 
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
